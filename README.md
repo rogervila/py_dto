@@ -2,13 +2,9 @@
 
 <p align="center"><img height="200" alt="rogervila/py_dto" src="https://image.flaticon.com/icons/png/512/2911/2911162.png" /></p>
 
-<!--
-
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rogervila_py_dto&metric=coverage)](https://sonarcloud.io/dashboard?id=rogervila_py_dto)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rogervila_py_dto&metric=alert_status)](https://sonarcloud.io/dashboard?id=rogervila_py_dto)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=rogervila_py_dto&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=rogervila_py_dto)
-
--->
 
 Data Transfer Objects (DTO) with Python.
 

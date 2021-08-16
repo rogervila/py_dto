@@ -1,0 +1,96 @@
+import unittest
+from py_dto import DTO
+from typing import Any
+
+
+class test_py_dto(unittest.TestCase):
+    def test_object_property_types(self):
+        class TestDTO(DTO):
+            test_string: str
+            test_integer: int
+
+        o = TestDTO({'test_string': 'I am a string', 'test_integer': 1714})
+
+        self.assertEqual(o.test_string, 'I am a string')
+        self.assertEqual(o.test_integer, 1714)
+
+    def test_fails_if_property_is_not_defined(self):
+        with self.assertRaises(ValueError):
+            class TestDTO(DTO):
+                test_list: list
+
+            TestDTO({'test_list': [1, 2, 3], 'this_will_fail': 'the failure'})
+
+    def test_fails_if_property_type_is_incorrect(self):
+        with self.assertRaises(TypeError):
+            class TestDTO(DTO):
+                test_dict: dict
+
+            TestDTO({'test_dict': 'not a dict'})
+
+    def test_object_properties_are_not_set_when_no_values(self):
+        class TestDTO(DTO):
+            test_string: str
+
+        o = TestDTO({})
+
+        self.assertEqual(o.__dict__, {})
+        self.assertFalse(hasattr(o, 'test_string'))
+
+    def test_exception_property_types(self):
+        class TestDTO(DTO):
+            test_exception: ValueError
+
+        o = TestDTO({'test_exception': ValueError()})
+
+        self.assertEqual(type(o.test_exception), ValueError)
+
+    def test_custom_property_types(self):
+        class MyObject():
+            pass
+
+        class TestDTO(DTO):
+            test_custom: MyObject
+
+        o = TestDTO({'test_custom': MyObject()})
+
+        self.assertEqual(type(o.test_custom), MyObject)
+
+    def test_any_type(self):
+        class TestDTO(DTO):
+            test_any: Any
+
+        properties = ['string', 0, 1.2, [], {}, Exception]
+
+        for property in properties:
+            o = TestDTO({'test_any': property})
+
+            self.assertEqual(type(o.test_any), type(property))
+
+    def test_readme_example(self):
+        class UserProfile(DTO):
+            avatar: str
+
+        # The DTO with the properties defined
+        class User(DTO):
+            profile: UserProfile
+            name: str
+            email: str
+            age: int
+            tags: list
+
+        # Create the DTO instance
+        user = User({
+            'profile': UserProfile({'avatar': 'https://i.pravatar.cc/300'}),
+            'name': 'John',
+            'email': 'john@example.com',
+            'age': 42,
+            'tags': ['developer', 'python']
+        })
+
+        self.assertEqual(user.name, 'John')
+        self.assertEqual(user.profile.avatar, 'https://i.pravatar.cc/300')
+
+
+if __name__ == '__main__':
+    unittest.main()

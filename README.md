@@ -57,4 +57,6 @@ print(user.profile.avatar) # https://i.pravatar.cc/300
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
+Original idea comes from [spatie/data-transfer-object](https://github.com/spatie/data-transfer-object) package for PHP.
+
 <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

@@ -10,7 +10,7 @@ class DTO(abc.ABC):
 
         for key, value in data.items():
             try:
-                if hints[key] != Any and hints[key] != type(value):
+                if hints[key] != Any and hints[key] != type(value) and value != None:
                     raise TypeError
 
                 setattr(self, key, value)

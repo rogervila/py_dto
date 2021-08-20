@@ -67,6 +67,24 @@ class test_py_dto(unittest.TestCase):
 
             self.assertEqual(type(o.test_any), type(property))
 
+    def test_allows_nones(self):
+        class TestDTO(DTO):
+            test_str_or_none: str
+
+        o = TestDTO({'test_str_or_none': None}, allows_nones=True)
+
+        self.assertEqual(o.test_str_or_none, None)
+
+    def test_does_not_allow_nones(self):
+        class TestDTO(DTO):
+                test_str_or_none: str
+
+        with self.assertRaises(TypeError):
+            TestDTO({'test_str_or_none': None}, allows_nones=False)
+
+        with self.assertRaises(TypeError):
+            TestDTO({'test_str_or_none': None})
+
     def test_readme_example(self):
         class UserProfile(DTO):
             avatar: str

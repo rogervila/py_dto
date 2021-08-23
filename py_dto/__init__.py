@@ -14,7 +14,7 @@ class DTO(abc.ABC):
                     setattr(self, key, value)
                     continue
 
-                raise TypeError
+                raise TypeError(key)
 
             except KeyError as e:
                 raise ValueError from e

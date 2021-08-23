@@ -77,13 +77,26 @@ class test_py_dto(unittest.TestCase):
 
     def test_does_not_allow_nones(self):
         class TestDTO(DTO):
-                test_str_or_none: str
+            test_str_or_none: str
 
         with self.assertRaises(TypeError):
             TestDTO({'test_str_or_none': None}, allows_nones=False)
 
         with self.assertRaises(TypeError):
             TestDTO({'test_str_or_none': None})
+
+    def test_exception_return_dictionary_key(self):
+        class TestDTO(DTO):
+            test_error_type: str
+            test_correct_type: int
+
+        try:
+            o = TestDTO({
+                'test_error_type': int(1),
+                'test_correct_type': int(1)
+            })
+        except TypeError as e:
+            self.assertEqual(e.args[0], 'test_error_type')
 
     def test_readme_example(self):
         class UserProfile(DTO):

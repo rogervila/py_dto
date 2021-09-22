@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import abc
-from typing import get_type_hints, Any
+from typing import get_type_hints
+from runtype import isa
 
 
 class DTO(abc.ABC):
@@ -10,7 +11,7 @@ class DTO(abc.ABC):
 
         for key, value in data.items():
             try:
-                if hints[key] == Any or hints[key] == type(value) or (allows_nones and value is None):
+                if isa(value, hints[key]) or (allows_nones and value is None):
                     setattr(self, key, value)
                     continue
 

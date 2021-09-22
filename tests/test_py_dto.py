@@ -91,12 +91,40 @@ class test_py_dto(unittest.TestCase):
             test_correct_type: int
 
         try:
-            o = TestDTO({
+            TestDTO({
                 'test_error_type': int(1),
                 'test_correct_type': int(1)
             })
         except TypeError as e:
             self.assertEqual(e.args[0], 'test_error_type')
+
+    def test_list_of_types(self):
+        class TestA(DTO):
+            test_list_of_types: list[int]
+
+        o = TestA({'test_list_of_types': [1]})
+
+        self.assertEqual(o.test_list_of_types, [1])
+
+        class TestB(DTO):
+            test_list_of_types: dict[str, int]
+
+        o = TestB({'test_list_of_types': {'a': 42}})
+
+        self.assertEqual(o.test_list_of_types, {'a': 42})
+
+    def test_list_of_types_error(self):
+        class TestA(DTO):
+            test_list_of_types: list[int]
+
+        with self.assertRaises(TypeError):
+            TestA({'test_list_of_types': ['fail']})
+
+        class TestB(DTO):
+            test_list_of_types: dict[str, int]
+
+        with self.assertRaises(TypeError):
+            TestB({'test_list_of_types': {'a': 'fail'}})
 
     def test_readme_example(self):
         class UserProfile(DTO):
@@ -108,7 +136,7 @@ class test_py_dto(unittest.TestCase):
             name: str
             email: str
             age: int
-            tags: list
+            tags: list[str]
 
         # Create the DTO instance
         user = User({

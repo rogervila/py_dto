@@ -16,7 +16,9 @@ setup(
     url='https://github.com/rogervila/py_dto',
     download_url='https://github.com/rogervila/py_dto/archive/CURRENT_VERSION.tar.gz',
     keywords=['python data transfer objects', 'python dto', 'dto'],
-    install_requires=[],
+    install_requires=[
+        'runtype >= 0.1.16',
+    ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',

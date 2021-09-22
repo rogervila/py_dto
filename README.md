@@ -38,7 +38,7 @@ class User(DTO):
     name: str
     email: str
     age: int
-    tags: list
+    tags: list[str]
 
 # Create the DTO instance
 user = User({

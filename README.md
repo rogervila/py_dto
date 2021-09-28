@@ -17,13 +17,7 @@ pip install py_dto
 
 ## Usage
 
-Define your object properties with types defined.
-
-You can use custom objects and the `Any` type.
-
-### Example
-
-We will create a User DTO with some properties.
+Define your object properties with types defined, then pass a `dict` with data.
 
 ```py
 from py_dto import DTO
@@ -51,6 +45,32 @@ user = User({
 
 print(user.name) # 'John'
 print(user.profile.avatar) # https://i.pravatar.cc/300
+```
+
+### The `Any` type
+
+Event DTO are supposed to specify data types, you can use the `Any` type to accept "any" type for a property:
+
+```py
+from py_dto import DTO
+from typing import Any
+
+# The DTO accepts "any" type of data for the "name" property
+class User(DTO):
+    name: Any
+
+# Create the DTO instance
+user = User({
+    'name': 'John',
+})
+
+print(user.name) # 'John'
+
+user = User({
+    'name': 123,
+})
+
+print(user.name) # 123
 ```
 
 ## License

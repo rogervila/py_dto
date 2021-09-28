@@ -28,15 +28,6 @@ class test_py_dto(unittest.TestCase):
 
             TestDTO({'test_dict': 'not a dict'})
 
-    def test_object_properties_are_not_set_when_no_values(self):
-        class TestDTO(DTO):
-            test_string: str
-
-        o = TestDTO({})
-
-        self.assertEqual(o.__dict__, {})
-        self.assertFalse(hasattr(o, 'test_string'))
-
     def test_exception_property_types(self):
         class TestDTO(DTO):
             test_exception: ValueError
@@ -113,6 +104,29 @@ class test_py_dto(unittest.TestCase):
 
         self.assertEqual(o.test_list_of_types, {'a': 42})
 
+    def test_without_missing_keys(self):
+        class TestDTO(DTO):
+            a: str
+            b: str
+
+        with self.assertRaises(KeyError):
+            TestDTO({'a': 'test'})
+
+        with self.assertRaises(KeyError):
+            TestDTO({'a': 'test'}, allows_missing_keys=False)
+
+    def test_with_missing_keys(self):
+        class TestDTO(DTO):
+            a: str
+            b: str
+
+        o = TestDTO({'a': 'test'}, allows_missing_keys=True)
+        self.assertEqual(o.__dict__, {'a': 'test'})
+        self.assertFalse(hasattr(o, 'b'))
+
+        o = TestDTO({}, allows_missing_keys=True)
+        self.assertEqual(o.__dict__, {})
+
     def test_list_of_types_error(self):
         class TestA(DTO):
             test_list_of_types: list[int]
@@ -126,7 +140,7 @@ class test_py_dto(unittest.TestCase):
         with self.assertRaises(TypeError):
             TestB({'test_list_of_types': {'a': 'fail'}})
 
-    def test_readme_example(self):
+    def test_readme_usage_example(self):
         class UserProfile(DTO):
             avatar: str
 
@@ -149,6 +163,24 @@ class test_py_dto(unittest.TestCase):
 
         self.assertEqual(user.name, 'John')
         self.assertEqual(user.profile.avatar, 'https://i.pravatar.cc/300')
+
+    def test_readme_any_example(self):
+        # The DTO accepts "any" type of data for the "name" property
+        class User(DTO):
+            name: Any
+
+        # Create the DTO instance
+        user = User({
+            'name': 'John',
+        })
+
+        self.assertEqual(user.name, 'John')
+
+        user = User({
+            'name': 123,
+        })
+
+        self.assertEqual(user.name, 123)
 
 
 if __name__ == '__main__':

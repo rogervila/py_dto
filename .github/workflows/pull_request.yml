@@ -21,8 +21,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         sh test.sh
+    - name: Set env.USE_SONAR variable
+      run: |
+          if [[ -z $SONAR_TOKEN && -z $GITHUB_TOKEN ]]; then
+              echo "USE_SONAR=1" >> "$GITHUB_ENV"
+          else
+              echo "USE_SONAR=0" >> "$GITHUB_ENV"
+          fi
     - name: SonarCloud Scan
-      if: ${{ matrix.python-version == '3.9'}}
+      if: ${{ env.USE_SONAR == '1' && matrix.python-version == '3.9'}}
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.SONAR_GITHUB_TOKEN }}

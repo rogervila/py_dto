@@ -1,6 +1,6 @@
 import unittest
+from typing import Any, Optional
 from py_dto import DTO
-from typing import Any
 
 
 class test_py_dto(unittest.TestCase):
@@ -53,28 +53,33 @@ class test_py_dto(unittest.TestCase):
 
         properties = ['string', 0, 1.2, [], {}, Exception]
 
-        for property in properties:
-            o = TestDTO({'test_any': property})
+        for prop in properties:
+            o = TestDTO({'test_any': prop})
 
-            self.assertEqual(type(o.test_any), type(property))
+            self.assertEqual(type(o.test_any), type(prop))
 
     def test_allows_nones(self):
         class TestDTO(DTO):
-            test_str_or_none: str
+            test_str_or_none: Optional[str]
 
-        o = TestDTO({'test_str_or_none': None}, allows_nones=True)
-
+        o = TestDTO({'test_str_or_none': None})
         self.assertEqual(o.test_str_or_none, None)
+
+        o = TestDTO({'test_str_or_none': 'test'})
+        self.assertEqual(o.test_str_or_none, 'test')
+
+        with self.assertRaises(TypeError):
+            TestDTO({'test_str_or_none': 42})
 
     def test_does_not_allow_nones(self):
         class TestDTO(DTO):
-            test_str_or_none: str
+            test_str_not_none: str
+
+        o = TestDTO({'test_str_not_none': 'test'})
+        self.assertEqual(o.test_str_not_none, 'test')
 
         with self.assertRaises(TypeError):
-            TestDTO({'test_str_or_none': None}, allows_nones=False)
-
-        with self.assertRaises(TypeError):
-            TestDTO({'test_str_or_none': None})
+            TestDTO({'test_str_not_none': None})
 
     def test_exception_return_dictionary_key(self):
         class TestDTO(DTO):
@@ -181,6 +186,31 @@ class test_py_dto(unittest.TestCase):
         })
 
         self.assertEqual(user.name, 123)
+
+    def test_readme_none_example(self):
+        # The DTO "name" property can be a str or a None value
+        class User(DTO):
+            name: Optional[str]
+
+        # Create the DTO instance with a "str"
+        user = User({
+            'name': 'John',
+        })
+
+        self.assertEqual(user.name, 'John')
+
+        # Create the DTO instance with a "None"
+        user = User({
+            'name': None,
+        })
+
+        self.assertEqual(user.name, None)
+
+        # Any other type will raise an exception
+        with self.assertRaises(TypeError):
+            user = User({
+                'name': 123,
+            })
 
 
 if __name__ == '__main__':

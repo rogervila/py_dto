@@ -28,20 +28,3 @@ jobs:
           coverage run -m unittest discover
           coverage xml -i
           sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
-      - name: SonarCloud Scan
-        if: ${{ matrix.python-version == '3.12'}}
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.SONAR_GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=rogervila-github
-            -Dsonar.projectKey=rogervila_py_dto
-            -Dsonar.sources=.
-            -Dsonar.python.version=3.12
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.exclusions=tests/**
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
-            -Dsonar.verbose=true

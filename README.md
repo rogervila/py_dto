@@ -2,10 +2,8 @@
 
 <p align="center"><img height="200" alt="rogervila/py_dto" src="https://rogervila.es/static/img/py_dto.png" /></p>
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rogervila_py_dto&metric=coverage)](https://sonarcloud.io/dashboard?id=rogervila_py_dto)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rogervila_py_dto&metric=alert_status)](https://sonarcloud.io/dashboard?id=rogervila_py_dto)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=rogervila_py_dto&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=rogervila_py_dto)
-[![Downloads](https://img.shields.io/pypi/dm/py-dto.svg)](https://github.com/rogervila/py_dto)
+[![PyPI version](https://badge.fury.io/py/equipment.svg)](https://badge.fury.io/py/py_dto)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/py_dto)
 
 Data Transfer Objects (DTO) with Python.
 

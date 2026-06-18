@@ -25,23 +25,3 @@ jobs:
           coverage run -m unittest discover
           coverage xml -i
           sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
-      - name: Get PR author
-        id: get_author
-        run: echo "AUTHOR=${{ github.event.pull_request.user.login }}" >> "$GITHUB_OUTPUT"
-      - name: SonarCloud Scan
-        if: ${{ matrix.python-version == '3.14' && steps.get_author.outputs.AUTHOR == 'rogervila' }}
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.SONAR_GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=rogervila-github
-            -Dsonar.projectKey=rogervila_py_dto
-            -Dsonar.sources=.
-            -Dsonar.python.version=3.9,3.10,3.11,3.12,3.13,3.14
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.exclusions=tests/**
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
-            -Dsonar.verbose=true

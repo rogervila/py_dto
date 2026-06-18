@@ -10,7 +10,7 @@ class DTO(ABC):
         self._assert(data, dict)
         self._assert(allows_missing_keys, bool)
 
-        hints = get_type_hints(self)
+        hints = get_type_hints(type(self))
 
         if not allows_missing_keys:
             self._raise_missing_hints(data, hints)

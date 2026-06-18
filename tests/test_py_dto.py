@@ -1,3 +1,4 @@
+import sys
 import unittest
 from typing import Any, Optional
 from py_dto import DTO
@@ -70,6 +71,36 @@ class test_py_dto(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             TestDTO({'test_str_or_none': 42})
+
+    @unittest.skipIf(sys.version_info < (3, 10), 'PEP 604 union syntax requires Python 3.10 or newer')
+    def test_union_operator_types(self):
+        class TestDTO(DTO):
+            pass
+
+        TestDTO.__annotations__ = {
+            'test_str_or_none': str | None,
+            'test_nested': list[dict[str, int | None]],
+        }
+
+        o = TestDTO({
+            'test_str_or_none': None,
+            'test_nested': [{'a': 42, 'b': None}],
+        })
+
+        self.assertEqual(getattr(o, 'test_str_or_none'), None)
+        self.assertEqual(getattr(o, 'test_nested'), [{'a': 42, 'b': None}])
+
+        with self.assertRaises(TypeError):
+            TestDTO({
+                'test_str_or_none': 42,
+                'test_nested': [{'a': 42}],
+            })
+
+        with self.assertRaises(TypeError):
+            TestDTO({
+                'test_str_or_none': 'test',
+                'test_nested': [{'a': 'fail'}],
+            })
 
     def test_does_not_allow_nones(self):
         class TestDTO(DTO):

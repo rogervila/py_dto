@@ -14,6 +14,8 @@ Data Transfer Objects (DTO) with Python.
 pip install py_dto
 ```
 
+Requires Python 3.9 or newer. Tested on Python 3.9 through 3.14.
+
 ## Usage
 
 Define the object properties with types defined, then pass a `dict` with data.
